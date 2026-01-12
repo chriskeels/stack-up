@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const Transaction = require("../models/Transaction");
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
 
-const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
-const openai = new OpenAIApi(configuration);
+// OpenAI client (new SDK)
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // GET /api/ai/insights → personalized tips
 router.get("/insights", auth, async (req, res) => {
@@ -25,14 +25,17 @@ ${summary}
 Give 3 short, actionable tips for this teen to save money, in teen-friendly language.
 `;
 
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt,
-      max_tokens: 150,
-      temperature: 0.7
+    const response = await openai.responses.create({
+      model: "gpt-4.1-mini",
+      input: prompt,
+      temperature: 0.7,
+      max_output_tokens: 200
     });
 
-    res.json({ tips: response.data.choices[0].text.trim().split("\n").filter(Boolean) });
+    const tipsText = response.output_text || "";
+    const tips = tipsText.split("\n").map(t => t.trim()).filter(Boolean);
+
+    res.json({ tips });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to generate insights" });

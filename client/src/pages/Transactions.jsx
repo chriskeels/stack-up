@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-const API = "http://localhost:5000/api/transactions";
+const API = "http://localhost:3000/api/transactions";
 
 const Transactions = () => {
   const { token } = useContext(AuthContext);
   const [transactions, setTransactions] = useState([]);
+
+  const formatCurrency = (value = 0) => `$${Number(value || 0).toFixed(2)}`;
 
   useEffect(() => {
     fetch(API, {
@@ -48,20 +50,27 @@ const Transactions = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">All Transactions</h1>
-      <ul className="space-y-2">
+    <div className="page">
+      <h1 className="section-title" style={{ marginTop: 0 }}>All Transactions</h1>
+      <ul className="list">
         {transactions.map(tx => (
-          <li key={tx._id} className="p-4 border rounded flex justify-between items-center">
+          <li key={tx._id || tx.id} className="list-item">
             <div>
-              <strong>{tx.category}</strong> ({tx.type})
-              <div className="text-gray-600 text-sm">{new Date(tx.date).toLocaleDateString()}</div>
-              {tx.note && <div className="text-gray-500 text-sm italic">{tx.note}</div>}
+              <div className="stat-label">{new Date(tx.date).toLocaleDateString()}</div>
+              <div className="meta">{tx.category} • {tx.type}</div>
+              {tx.note && <div className="meta">{tx.note}</div>}
             </div>
-            <div className="flex items-center space-x-2">
-              <span className={tx.type === "income" ? "text-green-600" : "text-red-600"}>${tx.amount}</span>
-              <button onClick={() => handleEdit(tx)} className="text-blue-500">Edit</button>
-              <button onClick={() => handleDelete(tx._id)} className="text-red-500">Delete</button>
+            <div className="button-row">
+              <span className={tx.type === "income" ? "amount-positive" : "amount-negative"}>
+                {tx.type === "income" ? "+" : "-"}
+                {formatCurrency(tx.amount)}
+              </span>
+              <button onClick={() => handleEdit(tx)} className="btn btn-secondary">
+                Edit
+              </button>
+              <button onClick={() => handleDelete(tx._id || tx.id)} className="btn btn-ghost">
+                Delete
+              </button>
             </div>
           </li>
         ))}

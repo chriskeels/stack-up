@@ -33,18 +33,14 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-3xl font-bold mb-6 text-center">Stack Up</h1>
-        <h2 className="text-xl font-semibold mb-4">Login</h2>
-        
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1 className="auth-title">Stack Up</h1>
+        <p className="auth-subtitle">Sign in to track your finances</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {error && <div className="alert error">{error}</div>}
+
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <input
             type="email"
             name="email"
@@ -52,7 +48,7 @@ const Login = () => {
             onChange={handleChange}
             placeholder="Email"
             required
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="field"
           />
           <input
             type="password"
@@ -61,21 +57,15 @@ const Login = () => {
             onChange={handleChange}
             placeholder="Password"
             required
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="field"
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition"
-          >
+          <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
             Login
           </button>
         </form>
 
-        <p className="mt-4 text-center text-gray-600">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-blue-500 hover:underline">
-            Register
-          </Link>
+        <p className="footer-text">
+          Don't have an account? <Link to="/register">Register</Link>
         </p>
       </div>
     </div>

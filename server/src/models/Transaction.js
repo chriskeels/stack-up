@@ -33,19 +33,26 @@ const Transaction = {
   async findOneAndUpdate(filter, update, options = {}) {
     const { _id, user } = filter;
     const { type, category, amount, date, note } = update;
-    
+    const id = parseInt(_id, 10);
+
+    if (Number.isNaN(id)) return null;
+
     const result = await pool.query(
       "UPDATE transactions SET type = $1, category = $2, amount = $3, date = $4, note = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 AND user_id = $7 RETURNING *",
-      [type, category, amount, date, note, _id, user]
+      [type, category, amount, date, note, id, user]
     );
     return result.rows[0];
   },
 
   async findOneAndDelete(filter) {
     const { _id, user } = filter;
+    const id = parseInt(_id, 10);
+
+    if (Number.isNaN(id)) return null;
+
     const result = await pool.query(
       "DELETE FROM transactions WHERE id = $1 AND user_id = $2 RETURNING *",
-      [_id, user]
+      [id, user]
     );
     return result.rows[0];
   },

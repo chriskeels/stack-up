@@ -1,6 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+
+// Load env before importing anything that needs it
+dotenv.config();
+
 const { connectDB } = require("./config/db");
 const { initDB } = require("./config/initDB");
 const authRoutes = require("./routes/auth");
@@ -8,8 +12,6 @@ const dashboardRoutes = require("./routes/dashboard");
 const transactionRoutes = require("./routes/transactions");
 const goalRoutes = require("./routes/goals");
 const aiRoutes = require("./routes/ai");
-
-dotenv.config();
 
 // Connect to PostgreSQL and initialize tables
 const startServer = async () => {

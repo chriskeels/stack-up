@@ -33,24 +33,15 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-3xl font-bold mb-6 text-center">Stack Up</h1>
-        <h2 className="text-xl font-semibold mb-4">Register</h2>
-        
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1 className="auth-title">Create Account</h1>
+        <p className="auth-subtitle">Get started with smarter saving</p>
 
-        {success && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            Account created! Redirecting to login...
-          </div>
-        )}
+        {error && <div className="alert error">{error}</div>}
+        {success && <div className="alert success">Account created! Redirecting to login...</div>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <input
             type="text"
             name="name"
@@ -58,7 +49,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Full Name"
             required
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="field"
           />
           <input
             type="email"
@@ -67,7 +58,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Email"
             required
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="field"
           />
           <input
             type="password"
@@ -77,21 +68,15 @@ const Register = () => {
             placeholder="Password"
             required
             minLength={6}
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="field"
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition"
-          >
+          <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
             Register
           </button>
         </form>
 
-        <p className="mt-4 text-center text-gray-600">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline">
-            Login
-          </Link>
+        <p className="footer-text">
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>

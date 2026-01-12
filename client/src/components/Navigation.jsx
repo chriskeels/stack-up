@@ -14,26 +14,22 @@ const Navigation = () => {
   if (!token) return null;
 
   return (
-    <nav className="bg-blue-600 text-white p-4 shadow-lg">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/dashboard" className="text-2xl font-bold hover:text-blue-200">
+    <nav className="nav-bar">
+      <div className="nav-content">
+        <Link to="/dashboard" className="nav-brand">
           Stack Up
         </Link>
-        
-        <div className="flex gap-6 items-center">
-          <Link to="/dashboard" className="hover:text-blue-200 transition">
+        <div className="nav-links">
+          <Link to="/dashboard" className="nav-link">
             Dashboard
           </Link>
-          <Link to="/transactions" className="hover:text-blue-200 transition">
+          <Link to="/transactions" className="nav-link">
             Transactions
           </Link>
-          <Link to="/goals" className="hover:text-blue-200 transition">
+          <Link to="/goals" className="nav-link">
             Goals
           </Link>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition"
-          >
+          <button onClick={handleLogout} className="nav-logout">
             Logout
           </button>
         </div>

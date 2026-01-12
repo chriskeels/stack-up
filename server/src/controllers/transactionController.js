@@ -10,7 +10,7 @@ exports.addTransaction = async (req, res) => {
       user: userId,
       type,
       category,
-      amount,
+      amount: Number(amount),
       date,
       note
     });
@@ -22,12 +22,12 @@ exports.addTransaction = async (req, res) => {
   }
 };
 
-// GET ALL TRANSACTIONS (optional for this feature)
+// GET ALL TRANSACTIONS
 exports.getTransactions = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const transactions = await Transaction.find({ user: userId }).sort({ date: -1 });
+    const transactions = await Transaction.find({ user: userId });
     res.json(transactions);
   } catch (err) {
     console.error(err);
@@ -44,7 +44,7 @@ exports.updateTransaction = async (req, res) => {
   try {
     const transaction = await Transaction.findOneAndUpdate(
       { _id: id, user: userId },
-      { type, category, amount, date, note },
+      { type, category, amount: Number(amount), date, note },
       { new: true }
     );
 

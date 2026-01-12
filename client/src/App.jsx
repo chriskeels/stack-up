@@ -14,35 +14,37 @@ function App() {
     <AuthProvider>
       <Router>
         <Navigation />
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/transactions"
-            element={
-              <ProtectedRoute>
-                <Transactions />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/goals"
-            element={
-              <ProtectedRoute>
-                <Goals />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/transactions"
+              element={
+                <ProtectedRoute>
+                  <Transactions />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/goals"
+              element={
+                <ProtectedRoute>
+                  <Goals />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </main>
       </Router>
     </AuthProvider>
   );

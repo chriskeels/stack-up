@@ -1,8 +1,8 @@
--- Stack Up Database Schema for PostgreSQL
+-- Stack Up Database Schema for PostgreSQL (Neon)
 
--- Users table
+-- Users table (text ids to stay compatible with existing Neon data)
 CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
+  id TEXT PRIMARY KEY DEFAULT md5(random()::text || clock_timestamp()::text),
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Transactions table
 CREATE TABLE IF NOT EXISTS transactions (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   type VARCHAR(20) NOT NULL CHECK (type IN ('income', 'expense')),
   category VARCHAR(100) NOT NULL,
   amount DECIMAL(10, 2) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS transactions (
 -- Goals table
 CREATE TABLE IF NOT EXISTS goals (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
   target_amount DECIMAL(10, 2) NOT NULL,
   progress DECIMAL(10, 2) DEFAULT 0,
