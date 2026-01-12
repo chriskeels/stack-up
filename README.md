@@ -32,26 +32,30 @@ Many students grow up without learning how to budget, save, or manage money. The
 
 ## Tech Stack
 
-**Frontend**
-- Next.js  
-- React  
-- Tailwind CSS  
+**Full-Stack Framework**
+- Next.js 15+ (App Router with Server & Client Components)
+- React 19
 
 **Backend**
-- Next.js API Routes  
-- Node.js  
-- JWT Authentication  
+- Next.js API Routes (in `/app/api`)
+- Node.js
+- JWT Authentication (jsonwebtoken)
+- Password Hashing (bcryptjs)
 
 **Database**
-- PostgreSQL  
+- PostgreSQL (via Neon or local)
+- pg (Node.js client)
+
+**Frontend Styling**
+- Custom CSS (no framework)
 
 **AI**
-- OpenAI API  
+- OpenAI API (GPT-4 for spending insights)
 
 **Tools**
-- Git & GitHub  
-- Vite / Next.js Dev Server  
-- Postman  
+- Git & GitHub
+- Next.js Dev Server
+- Postman (optional for API testing)
 
 ---
 
@@ -60,46 +64,73 @@ Many students grow up without learning how to budget, save, or manage money. The
 ### 1. Clone the repository
 ```bash
 git clone <your-repo-url>
-cd stackup
+cd stack-up
 ```
 
-### 2. Install dependencies
+### 2. Set up environment variables
+Copy `.env.local.example` to `.env.local` and fill in your values:
 ```bash
-cd client
-npm install
-cd ../server
-npm install
+cp .env.local.example .env.local
 ```
 
-### 3. Set up environment variables
-Create a file called `server/.env` and add:
+Edit `.env.local`:
 ```
-PORT=5000
-DATABASE_URL=postgresql://username:password@localhost:5432/stackup
-JWT_SECRET=yourSecretKey
-OPENAI_API_KEY=yourOpenAIKey
+DATABASE_URL=postgresql://username:password@host:5432/stackup
+JWT_SECRET=your-secure-random-string-here
+OPENAI_API_KEY=your-openai-api-key-here
+NODE_ENV=development
 ```
 
-### 4. Start the backend
+### 3. Install dependencies
 ```bash
-cd server
+npm install
+```
+
+### 4. Initialize the database (first time only)
+The database schema is automatically created when you start the app. The `app/layout.jsx` runs the `app/lib/schema.sql` on startup.
+
+### 5. Start the development server
+```bash
 npm run dev
 ```
 
-### 5. Start the frontend
-Open a new terminal and run:
-```bash
-cd client
-npm run dev
-```
+The app will be available at `http://localhost:3000`
 
-### 6. Open in your browser
-```
-http://localhost:5173
+### 6. Build for production
+```bash
+npm run build
+npm start
 ```
 
 ---
 
-## Final Notes
+---
+
+## Features Explained
+
+### Core Functionality
+- **User Accounts & Authentication:** Secure registration and login using JWT tokens and bcrypt password hashing
+- **Dashboard:** Real-time view of total balance, spending, savings, and recent transactions
+- **Transactions:** Add, edit, and delete income and expense transactions with categories and notes
+- **Savings Goals:** Set savings targets and track progress with visual progress bars
+- **Quick Actions:** One-click buttons (Deposit, Transfer, Withdraw, Cards) to quickly prefill the transaction form
+
+### AI Integration: Spending Insights
+The app uses OpenAI's GPT-4.1-mini model to analyze user spending patterns and provide personalized financial advice:
+
+- **Real-time analysis:** Examines total income, expenses, and savings goals
+- **Smart recommendations:** Generates tips like:
+  - "You're spending $X on groceries — try meal planning to save $Y per month"
+  - "Great job! You're on track to reach your savings goal"
+  - "Consider reducing impulse purchases — set a daily spending limit"
+- **Motivational tone:** Tips are encouraging and practical for teens
+
+The AI endpoint (`/api/ai/insights`) is called when users view the dashboard and displays tips in a dedicated card.
+
+---
+
+## Notes
 
 StackUp is built to help teens take control of their money in a simple, stress-free way. By combining budgeting tools with AI-powered insights, the app makes financial literacy more engaging and useful in real life.
+
+The app uses PostgreSQL (via Neon for cloud hosting) for reliability and OpenAI's API for intelligent, personalized spending advice that adapts to each user's habits.

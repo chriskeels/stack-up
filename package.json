@@ -1,18 +1,30 @@
 {
   "name": "stack-up",
   "version": "1.0.0",
-  "description": "Stack Up - Personal Finance Management App",
+  "description": "Stack Up - Personal Finance Management App for Teens",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"cd client && pnpm dev\" \"cd server && pnpm dev\"",
-    "dev:client": "cd client && pnpm dev",
-    "dev:server": "cd server && pnpm dev",
-    "install:all": "cd client && pnpm install && cd ../server && pnpm install"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "@prisma/adapter-neon": "^7.2.0",
+    "@prisma/client": "^7.2.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "next": "^15.0.0",
+    "pg": "^8.16.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "ws": "^8.19.0"
+  },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "eslint": "^8.50.0",
+    "eslint-config-next": "^15.0.0",
+    "prisma": "^7.2.0"
   }
 }

@@ -1,0 +1,52 @@
+// Prisma schema for Stack Up (PostgreSQL)
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model users {
+  id            String         @id @db.Text @default(dbgenerated("md5(random()::text || clock_timestamp()::text)"))
+  name          String         @db.VarChar(255)
+  email         String         @unique @db.VarChar(255)
+  password_hash String         @db.VarChar(255)
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @default(now())
+  transactions  transactions[]
+  goals         goals[]
+}
+
+model transactions {
+  id         Int       @id @default(autoincrement())
+  user_id    String
+  type       String     @db.VarChar(20)
+  category   String     @db.VarChar(100)
+  amount     Decimal    @db.Decimal(10, 2)
+  date       DateTime?  @default(now())
+  note       String?
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+
+  user users @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], map: "idx_transactions_user_id")
+  @@index([date], map: "idx_transactions_date")
+}
+
+model goals {
+  id            Int      @id @default(autoincrement())
+  user_id       String
+  title         String    @db.VarChar(255)
+  target_amount Decimal   @db.Decimal(10, 2)
+  progress      Decimal   @default(0) @db.Decimal(10, 2)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @default(now())
+
+  user users @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], map: "idx_goals_user_id")
+}
