@@ -1,19 +1,29 @@
-const mongoose = require("mongoose");
+const { pool } = require("../config/db");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
+const User = {
+  async create({ name, email, passwordHash }) {
+    const result = await pool.query(
+      "INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING id, name, email, created_at",
+      [name, email, passwordHash]
+    );
+    return result.rows[0];
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
+
+  async findOne({ email }) {
+    const result = await pool.query(
+      "SELECT id, name, email, password_hash, created_at FROM users WHERE email = $1",
+      [email]
+    );
+    return result.rows[0];
   },
-  passwordHash: {
-    type: String,
-    required: true
+
+  async findById(id) {
+    const result = await pool.query(
+      "SELECT id, name, email, created_at FROM users WHERE id = $1",
+      [id]
+    );
+    return result.rows[0];
   }
-}, { timestamps: true });
+};
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = User;

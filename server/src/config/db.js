@@ -1,16 +1,20 @@
-const mongoose = require("mongoose");
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/stackup", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("MongoDB connected successfully");
+    await pool.query("SELECT NOW()");
+    console.log("PostgreSQL connected successfully");
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    console.error("PostgreSQL connection error:", error);
     process.exit(1);
   }
 };
 
-module.exports = connectDB;
+module.exports = { pool, connectDB };

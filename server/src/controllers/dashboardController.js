@@ -1,3 +1,4 @@
+const { pool } = require("../config/db");
 const Transaction = require("../models/Transaction");
 const Goal = require("../models/Goal");
 
@@ -5,7 +6,12 @@ exports.getDashboard = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const transactions = await Transaction.find({ user: userId }).sort({ date: -1 }).limit(5);
+    // Get recent transactions
+    const transactionsResult = await pool.query(
+      "SELECT * FROM transactions WHERE user_id = $1 ORDER BY date DESC LIMIT 5",
+      [userId]
+    );
+    const transactions = transactionsResult.rows;
 
     const totalIncome = await Transaction.aggregate([
       { $match: { user: userId, type: "income" } },
