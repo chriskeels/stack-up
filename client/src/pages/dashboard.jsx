@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import AddTransactionForm from "../components/AddTransactionForm";
+import AiTips from "../components/AiTips";
 
 const API = "http://localhost:5000/api/dashboard";
 
@@ -34,6 +35,8 @@ const Dashboard = () => {
         balance: prev.balance + (tx.type === "income" ? tx.amount : -tx.amount),
         totalSpent: prev.totalSpent + (tx.type === "expense" ? tx.amount : 0)
       }))} />
+
+      <AiTips />
 
       <h2 className="text-xl font-semibold mb-2">Recent Transactions</h2>
       <ul className="space-y-2">
