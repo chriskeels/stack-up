@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import AddTransactionForm from "../components/AddTransactionForm";
 
 const API = "http://localhost:5000/api/dashboard";
 
@@ -26,6 +27,13 @@ const Dashboard = () => {
         <div className="p-4 bg-red-100 rounded">Spent: ${data.totalSpent}</div>
         <div className="p-4 bg-blue-100 rounded col-span-2">Saved: ${data.totalSaved}</div>
       </div>
+
+      <AddTransactionForm onAdd={tx => setData(prev => ({
+        ...prev,
+        recentTransactions: [tx, ...prev.recentTransactions],
+        balance: prev.balance + (tx.type === "income" ? tx.amount : -tx.amount),
+        totalSpent: prev.totalSpent + (tx.type === "expense" ? tx.amount : 0)
+      }))} />
 
       <h2 className="text-xl font-semibold mb-2">Recent Transactions</h2>
       <ul className="space-y-2">
