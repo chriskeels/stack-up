@@ -58,7 +58,17 @@ export async function GET(req) {
       if (!Array.isArray(tips) || tips.length === 0) throw new Error('No tips');
     } catch {
       // Fallback: split by newlines if JSON parse fails
-      tips = content.split('\n').map(line => line.trim()).filter(line => line && !line.startsWith('[') && !line.startsWith(']'));
+      tips = content
+        .split('\n')
+        .map(line => line.trim())
+        .filter(
+          line =>
+            line &&
+            !line.startsWith('[') &&
+            !line.startsWith(']') &&
+            !line.startsWith('```') &&
+            line.toLowerCase() !== 'json'
+        );
     }
     // Final fallback if still empty
     if (!Array.isArray(tips) || tips.length === 0) {
