@@ -18,7 +18,14 @@ const Transactions = () => {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
-      .then(setTransactions)
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setTransactions(data);
+        } else {
+          console.error('Invalid response:', data);
+          setTransactions([]);
+        }
+      })
       .catch(console.error);
   }, [token]);
 

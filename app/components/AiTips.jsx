@@ -29,13 +29,16 @@ const AiTips = () => {
     fetch('/api/user/summary', { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => res.json())
       .then((userSummary) => {
+        if (!userSummary || Array.isArray(userSummary)) {
+          userSummary = {};
+        }
         const dataHash = hashData(userSummary);
         const cacheKey = `${CACHE_KEY}_${dataHash}`;
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
           const { tips: cachedTips, timestamp } = JSON.parse(cached);
           if (Date.now() - timestamp < CACHE_DURATION) {
-            setTips(cachedTips);
+            setTips(cachedTips || []);
             return;
           }
         }
@@ -44,7 +47,10 @@ const AiTips = () => {
         fetch(API, { headers: { Authorization: `Bearer ${token}` } })
           .then((res) => res.json())
           .then((data) => {
-            const fetchedTips = data.tips || [];
+            let fetchedTips = [];
+            if (data && Array.isArray(data.tips)) {
+              fetchedTips = data.tips;
+            }
             setTips(fetchedTips);
             // Cache the tips with user data hash
             localStorage.setItem(
@@ -55,6 +61,7 @@ const AiTips = () => {
           })
           .catch((err) => {
             console.error(err);
+            setTips([]);
             fetchInProgress.current = false;
           });
       });

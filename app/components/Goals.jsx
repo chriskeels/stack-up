@@ -17,7 +17,14 @@ const Goals = () => {
   useEffect(() => {
     fetch(API, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => res.json())
-      .then(setGoals)
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setGoals(data);
+        } else {
+          console.error('Invalid response:', data);
+          setGoals([]);
+        }
+      })
       .catch(console.error);
   }, [token]);
 

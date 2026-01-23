@@ -28,7 +28,14 @@ const Dashboard = () => {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
-      .then(setData)
+      .then((data) => {
+        if (data && typeof data === 'object' && !Array.isArray(data)) {
+          setData(data);
+        } else {
+          console.error('Invalid response:', data);
+          setData(null);
+        }
+      })
       .catch(console.error);
   }, [token]);
 
