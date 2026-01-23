@@ -77,7 +77,9 @@ const Goals = () => {
 
   return (
     <div className="page">
-      <h1 className="section-title" style={{ marginTop: 0 }}>Savings Goals</h1>
+      <div className="page-header">
+        <h1>Savings Goals</h1>
+      </div>
       <form onSubmit={handleSubmit} className="form-card">
         <div className="section-title" style={{ marginTop: 0 }}>Create a Goal</div>
         <input

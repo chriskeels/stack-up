@@ -63,7 +63,9 @@ const Transactions = () => {
   return (
     <ProtectedRoute>
       <div className="page">
-        <h1 className="section-title" style={{ marginTop: 0 }}>All Transactions</h1>
+        <div className="page-header">
+          <h1>All Transactions</h1>
+        </div>
         {transactions.length === 0 && (
           <div className="empty-state">
             <div className="hero-sub">No transactions yet. Add your first one below.</div>
